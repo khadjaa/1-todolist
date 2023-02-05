@@ -4,6 +4,7 @@ type PropsType = {
     shapka?: string
     shapka2?: string
     tasks: Array<TaskType>
+    removeTask: (taskID: number) => void
 }
 
 type TaskType={
@@ -24,7 +25,13 @@ export const  Todolist = (props:PropsType) => {
                 <ul>
                     {props.tasks.map((el) =>{
                         return(
-                            <li key={el.id}><input type="checkbox" checked={el.isDone}/> <span>{el.title}</span></li>
+                            <li key={el.id}>
+                                <input type="checkbox" checked={el.isDone}/>
+                                <span>{el.title}</span>
+                                <button onClick={() => {
+                                    props.removeTask(el.id)
+                                }}>✖</button>
+                            </li>
                         )
                     })}
                 </ul>
