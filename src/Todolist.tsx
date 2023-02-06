@@ -2,7 +2,6 @@ import React from "react";
 
 type PropsType = {
     shapka?: string
-    shapka2?: string
     tasks: Array<TaskType>
     removeTask: (taskID: number) => void
 }
@@ -17,7 +16,6 @@ export const  Todolist = (props:PropsType) => {
     return (
             <div>
                 <h3>{props.shapka}</h3>
-                <h3>{props.shapka2}</h3>
                 <div>
                     <input/>
                     <button>+</button>
