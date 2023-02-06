@@ -1,4 +1,5 @@
 import {FilterValuesType} from "./App";
+import './App.css'
 
 type PropsType = {
     title?: string
@@ -16,7 +17,7 @@ type TaskType = {
 export const Todolist = (props: PropsType) => {
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h3 className={"title"}>{props.title}</h3>
             <div>
                 <input/>
                 <button>+</button>
