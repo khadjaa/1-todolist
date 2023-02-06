@@ -1,8 +1,7 @@
-import React from "react";
 import {FilterValuesType} from "./App";
 
 type PropsType = {
-    shapka?: string
+    title?: string
     tasks: Array<TaskType>
     removeTask: (taskID: number) => void
     changeFilter: (value: FilterValuesType) => void
@@ -17,7 +16,7 @@ type TaskType = {
 export const Todolist = (props: PropsType) => {
     return (
         <div>
-            <h3>{props.shapka}</h3>
+            <h3>{props.title}</h3>
             <div>
                 <input/>
                 <button>+</button>
@@ -26,12 +25,12 @@ export const Todolist = (props: PropsType) => {
                 {props.tasks.map((el) => {
                     return (
                         <li key={el.id}>
-                            <input type="checkbox" checked={el.isDone}/>
-                            <span>{el.title}</span>
                             <button onClick={() => {
                                 props.removeTask(el.id)
                             }}>✖
                             </button>
+                            <input type="checkbox" checked={el.isDone}/>
+                            <span>{el.title}</span>
                         </li>
                     )
                 })}
