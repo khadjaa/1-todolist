@@ -10,6 +10,7 @@ type PropsType = {
     changeFilter: (todoListId: string, value: FilterValuesType) => void
     addTask: (todoListId: string, newTitle: string) => void
     changeChecked: (todoListId: string, id: string, newIsDone: boolean) => void
+    removeTodoList: (todoListId: string) => void
 }
 
 type TaskType = {
@@ -56,6 +57,10 @@ export const Todolist = (props: PropsType) => {
         props.changeChecked(props.todoListId, tID, eventValue)
     }
 
+    const removeTodoListHandler = () => {
+        props.removeTodoList(props.todoListId)
+    }
+
     const mappedTodolist = props.tasks.map((el) => {
         return (
             <li key={el.id}>
@@ -71,7 +76,9 @@ export const Todolist = (props: PropsType) => {
 
     return (
         <div className={"title"}>
-            <h3>{props.title}</h3>
+            <h3>{props.title}
+                <button onClick={removeTodoListHandler}>x</button>
+            </h3>
             <div>
                 <input value={title} onChange={onChangeTitleHandler} onKeyDown={onKeyDownAddTaskHandler}/>
                 <button onClick={onClickAddTaskHandler}>+</button>
