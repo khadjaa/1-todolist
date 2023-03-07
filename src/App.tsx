@@ -42,9 +42,6 @@ function App() {
     const changeChecked = (todoListId: string, id: string, newIsDone: boolean) => {
         setTasks({...tasks, [todoListId]:[...tasks[todoListId]
                 .map(el => el.id === id ? {...el, isDone: newIsDone} : el)]})
-        //onClickCheckedHandler  !newIsDone
-        //changeCheckBoxHandler1  newIsDone
-        // setTasks(tasks1.map(el => el.id === id ? {...el, isDone: newIsDone} : el))
     }
 
     function changeFilter(todoListId: string, value: FilterValuesType) {
@@ -69,6 +66,7 @@ function App() {
                 if (el.filter === 'completed') {
                     tasksForTodolist = tasks[el.id].filter(tasks => tasks.isDone)
                 }
+
                 return (
                     <Todolist
                         key={el.id}
