@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
+import {v1} from "uuid";
 
 
 const title = 'ToDoList'
@@ -9,21 +10,27 @@ export type FilterValuesType = 'all' | 'active' | 'completed'
 function App() {
 
     let [tasks1, setTasks] = useState([
-        {id: 1, title: "HTML&CSS", isDone: true},
-        {id: 2, title: "JS", isDone: true},
-        {id: 3, title: "ReactJS", isDone: false},
-        {id: 4, title: "Rest API", isDone: false},
-        {id: 5, title: "GraphQL", isDone: false},
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false},
+        {id: v1(), title: "Rest API", isDone: false},
+        {id: v1(), title: "GraphQL", isDone: false},
     ])
 
     const addTask = (newTitle: string) => {
-        const newTask = {id: 1, title: newTitle, isDone: true}
+        const newTask = {id: v1(), title: newTitle, isDone: true}
         setTasks([newTask, ...tasks1])
     }
 
-    function removeTask(id: number) {
+    function removeTask(id: string) {
         let filteredTasks = tasks1.filter(task => task.id !== id)
         setTasks(filteredTasks)
+    }
+
+    const changeChecked = (id: string, newIsDone: boolean) => {
+        //onClickCheckedHandler  !newIsDone
+        //changeCheckBoxHandler1  newIsDone
+        setTasks(tasks1.map(el => el.id === id ? {...el, isDone: newIsDone} : el))
     }
 
     let [filter, setFilter] = useState<FilterValuesType>("all")
@@ -48,6 +55,7 @@ function App() {
                       removeTask={removeTask}
                       changeFilter={changeFilter}
                       addTask={addTask}
+                      changeChecked={changeChecked}
             />
         </div>
     );
