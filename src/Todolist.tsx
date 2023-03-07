@@ -20,6 +20,7 @@ type TaskType = {
 export const Todolist = (props: PropsType) => {
 
     const [title, setTitle] = useState('')
+    const [filterValue, setFilterValue] = useState('all')
     // const [checked, setChecked] = useState(true)
 
     const onClickCheckedHandler = (el: string, isDone: boolean) => {
@@ -48,6 +49,7 @@ export const Todolist = (props: PropsType) => {
 
     const tsarOnClickChangeFilterHandler = (filterType: FilterValuesType) => {
         props.changeFilter(filterType)
+        setFilterValue(filterType)
     }
 
     const changeCheckBoxHandler1 = (tID: string, eventValue: boolean) => {
@@ -78,9 +80,12 @@ export const Todolist = (props: PropsType) => {
                 {mappedTodolist}
             </ul>
             <div>
-                <button onClick={() => tsarOnClickChangeFilterHandler('all')}>All</button>
-                <button onClick={() => tsarOnClickChangeFilterHandler('active')}>Active</button>
-                <button onClick={() => tsarOnClickChangeFilterHandler('completed')}>Completed</button>
+                <button className={filterValue === 'all' ? 'active-filter' : ''}
+                        onClick={() => tsarOnClickChangeFilterHandler('all')}>All</button>
+                <button className={filterValue === 'active' ? 'active-filter' : ''}
+                        onClick={() => tsarOnClickChangeFilterHandler('active')}>Active</button>
+                <button className={filterValue === 'completed' ? 'active-filter' : ''}
+                        onClick={() => tsarOnClickChangeFilterHandler('completed')}>Completed</button>
             </div>
         </div>
     )
