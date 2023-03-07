@@ -1,6 +1,6 @@
 import {FilterValuesType} from "./App";
 import './App.css'
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useState} from "react";
 
 type PropsType = {
     title?: string
@@ -18,6 +18,19 @@ type TaskType = {
 
 export const Todolist = (props: PropsType) => {
 
+    const mappedTodolist = props.tasks.map((el) => {
+        return (
+            <li key={el.id}>
+                <input type="checkbox" checked={el.isDone}/>
+                <span>{el.title}</span>
+                <button onClick={() => {
+                    props.removeTask(el.id)
+                }}>x
+                </button>
+            </li>
+        )
+    })
+
     const [title, setTitle] = useState('')
 
     const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,31 +42,32 @@ export const Todolist = (props: PropsType) => {
         setTitle('')
     }
 
+    const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            props.addTask(title)
+            setTitle('')
+        }
+    }
+
+    const tsarOnClickChangeFilterHandler = (filterType: FilterValuesType) => {
+        props.changeFilter(filterType)
+    }
+
+
     return (
         <div className={"title"}>
-            <h3 >{props.title}</h3>
+            <h3>{props.title}</h3>
             <div>
-                <input value={title} onChange={onChangeTitleHandler}/>
+                <input value={title} onChange={onChangeTitleHandler} onKeyDown={onKeyDownAddTaskHandler}/>
                 <button onClick={onClickAddTaskHandler}>+</button>
             </div>
             <ul>
-                {props.tasks.map((el) => {
-                    return (
-                        <li key={el.id}>
-                            <input type="checkbox" checked={el.isDone}/>
-                            <span>{el.title}</span>
-                            <button onClick={() => {
-                                props.removeTask(el.id)
-                            }} >✖
-                            </button>
-                        </li>
-                    )
-                })}
+                {mappedTodolist}
             </ul>
-            <div >
-                <button onClick={() => props.changeFilter('all')}>All</button>
-                <button onClick={() => props.changeFilter('active')}>Active</button>
-                <button onClick={() => props.changeFilter('completed')}>Completed</button>
+            <div>
+                <button onClick={() => tsarOnClickChangeFilterHandler('all')}>All</button>
+                <button onClick={() => tsarOnClickChangeFilterHandler('active')}>Active</button>
+                <button onClick={() => tsarOnClickChangeFilterHandler('completed')}>Completed</button>
             </div>
         </div>
     )
