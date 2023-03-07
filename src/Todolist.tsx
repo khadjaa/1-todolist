@@ -24,10 +24,6 @@ export const Todolist = (props: PropsType) => {
     const [title, setTitle] = useState('')
     const [filterValue, setFilterValue] = useState('all')
 
-    const onClickCheckedHandler = (el: string, isDone: boolean) => {
-        props.changeChecked(props.todoListId, el, isDone)
-    }
-
     const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
