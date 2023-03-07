@@ -17,6 +17,7 @@
 
 .active-filter {
   background-color: aquamarine;
+  border-radius: 5px;
 }
 
 .is-done {

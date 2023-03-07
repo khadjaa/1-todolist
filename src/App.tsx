@@ -3,60 +3,79 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from "uuid";
 
-
-const title = 'ToDoList'
 export type FilterValuesType = 'all' | 'active' | 'completed'
+
+const todoListId_1 = v1()
+const todoListId_2 = v1()
 
 function App() {
 
-    let [tasks1, setTasks] = useState([
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},
+    const [todoLists, setTodoList] = useState([
+        {id: todoListId_1, title: 'What to Learn', filter: 'all'},
+        {id: todoListId_2, title: 'What to Buy', filter: 'all'},
     ])
 
-    const addTask = (newTitle: string) => {
+    const [tasks, setTasks] = useState({
+        [todoListId_1]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},
+        ],
+        [todoListId_2]: [
+            {id: v1(), title: "Courses IT", isDone: true},
+            {id: v1(), title: "Married", isDone: true},
+            {id: v1(), title: "Shelby", isDone: false},
+        ]
+    })
+
+    const addTask = (todoListId: string, newTitle: string) => {
         const newTask = {id: v1(), title: newTitle, isDone: true}
-        setTasks([newTask, ...tasks1])
+        setTasks({...tasks, [todoListId]: [newTask, ...tasks[todoListId]]})
     }
 
-    function removeTask(id: string) {
-        let filteredTasks = tasks1.filter(task => task.id !== id)
-        setTasks(filteredTasks)
+    function removeTask(todoListId: string, id: string) {
+        setTasks({...tasks, [todoListId]: [...tasks[todoListId].filter(el => el.id !== id)]})
     }
 
-    const changeChecked = (id: string, newIsDone: boolean) => {
+    const changeChecked = (todoListId: string, id: string, newIsDone: boolean) => {
+        setTasks({...tasks, [todoListId]:[...tasks[todoListId]
+                .map(el => el.id === id ? {...el, isDone: newIsDone} : el)]})
         //onClickCheckedHandler  !newIsDone
         //changeCheckBoxHandler1  newIsDone
-        setTasks(tasks1.map(el => el.id === id ? {...el, isDone: newIsDone} : el))
+        // setTasks(tasks1.map(el => el.id === id ? {...el, isDone: newIsDone} : el))
     }
 
-    let [filter, setFilter] = useState<FilterValuesType>("all")
-
-    let tasksForTodolist = tasks1
-
-    if (filter === 'active') {
-        tasksForTodolist = tasks1.filter(tasks1 => !tasks1.isDone)
-    }
-    if (filter === 'completed') {
-        tasksForTodolist = tasks1.filter(tasks1 => tasks1.isDone)
-    }
-
-    function changeFilter(value: FilterValuesType) {
-        setFilter(value)
+    function changeFilter(todoListId: string, value: FilterValuesType) {
+        setTodoList([...todoLists.map(el => el.id === todoListId ? {...el, filter: value} : el)])
     }
 
     return (
         <div className="App">
-            <Todolist title={title}
-                      tasks={tasksForTodolist}
-                      removeTask={removeTask}
-                      changeFilter={changeFilter}
-                      addTask={addTask}
-                      changeChecked={changeChecked}
-            />
+            {todoLists.map(el => {
+
+                let tasksForTodolist = tasks[el.id]
+
+                if (el.filter === 'active') {
+                    tasksForTodolist = tasks[el.id].filter(tasks => !tasks.isDone)
+                }
+                if (el.filter === 'completed') {
+                    tasksForTodolist = tasks[el.id].filter(tasks => tasks.isDone)
+                }
+                return (
+                    <Todolist
+                        key={el.id}
+                        todoListId={el.id}
+                        title={el.title}
+                        tasks={tasksForTodolist}
+                        removeTask={removeTask}
+                        changeFilter={changeFilter}
+                        addTask={addTask}
+                        changeChecked={changeChecked}
+                    />
+                )
+            })}
         </div>
     );
 }
