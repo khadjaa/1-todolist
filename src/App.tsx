@@ -16,6 +16,11 @@ function App() {
         {id: 5, title: "GraphQL", isDone: false},
     ])
 
+    const addTask = (newTitle: string) => {
+        const newTask = {id: 1, title: newTitle, isDone: true}
+        setTasks([newTask, ...tasks1])
+    }
+
     function removeTask(id: number) {
         let filteredTasks = tasks1.filter(task => task.id !== id)
         setTasks(filteredTasks)
@@ -42,6 +47,7 @@ function App() {
                       tasks={tasksForTodolist}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
+                      addTask={addTask}
             />
         </div>
     );

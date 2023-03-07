@@ -1,11 +1,13 @@
 import {FilterValuesType} from "./App";
 import './App.css'
+import {ChangeEvent, useState} from "react";
 
 type PropsType = {
     title?: string
     tasks: Array<TaskType>
     removeTask: (taskID: number) => void
     changeFilter: (value: FilterValuesType) => void
+    addTask: (newTitle: string) => void
 }
 
 type TaskType = {
@@ -15,28 +17,35 @@ type TaskType = {
 }
 
 export const Todolist = (props: PropsType) => {
+
+    const [title, setTitle] = useState('')
+
+    const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+    }
+
     return (
-        <div>
-            <h3 className={"title"}>{props.title}</h3>
+        <div className={"title"}>
+            <h3 >{props.title}</h3>
             <div>
-                <input/>
-                <button>+</button>
+                <input value={title} onChange={onChangeTitleHandler}/>
+                <button onClick={() => props.addTask(title)}>+</button>
             </div>
             <ul>
                 {props.tasks.map((el) => {
                     return (
                         <li key={el.id}>
-                            <button onClick={() => {
-                                props.removeTask(el.id)
-                            }}>✖
-                            </button>
                             <input type="checkbox" checked={el.isDone}/>
                             <span>{el.title}</span>
+                            <button onClick={() => {
+                                props.removeTask(el.id)
+                            }} >✖
+                            </button>
                         </li>
                     )
                 })}
             </ul>
-            <div>
+            <div >
                 <button onClick={() => props.changeFilter('all')}>All</button>
                 <button onClick={() => props.changeFilter('active')}>Active</button>
                 <button onClick={() => props.changeFilter('completed')}>Completed</button>
