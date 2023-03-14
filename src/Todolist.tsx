@@ -1,17 +1,20 @@
-import App, {FilterValuesType} from "./App";
+import {FilterValuesType} from "./App";
 import './App.css'
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {useState} from "react";
 import AddItemForm from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
 
 type PropsType = {
     todoListId: string
-    title?: string
+    title: string
     tasks: Array<TaskType>
     removeTask: (todoListId: string, taskID: string) => void
     changeFilter: (todoListId: string, value: FilterValuesType) => void
     addTask: (todoListId: string, newTitle: string) => void
     changeChecked: (todoListId: string, id: string, newIsDone: boolean) => void
     removeTodoList: (todoListId: string) => void
+    changeTaskTitle: (todoListId: string, id: string, newTaskTitle: string) => void
+    changeTodoListTitle: (todoListId: string, newTodoListTitle: string) => void
 }
 
 type TaskType = {
@@ -45,13 +48,22 @@ export const Todolist = (props: PropsType) => {
         props.addTask(props.todoListId, title)
     }
 
+    const changeTodoListTitleHandler = (title: string) => {
+        props.changeTodoListTitle(props.todoListId, title)
+    }
+
     const mappedTodolist = props.tasks.map((el) => {
+
+        const changeTaskTitleHandler = (title: string) => {
+            props.changeTaskTitle(props.todoListId, el.id, title)
+        }
+
         return (
             <li key={el.id}>
                 <input type="checkbox" checked={el.isDone}
                        onClick={(e) =>
                            changeCheckBoxHandler1(el.id, e.currentTarget.checked)}/>
-                <span>{el.title}</span>
+                <EditableSpan title={el.title} changeTaskTitle={changeTaskTitleHandler}/>
                 <button onClick={() => onClickRemoveTaskHandler(el.id)}>x
                 </button>
             </li>
@@ -60,10 +72,11 @@ export const Todolist = (props: PropsType) => {
 
     return (
         <div className={"title"}>
-            <h3>{props.title}
+            <h3>
+                <EditableSpan title={props.title} changeTaskTitle={changeTodoListTitleHandler}/>
                 <button onClick={removeTodoListHandler}>x</button>
             </h3>
-                <AddItemForm addItem={addTask}/>
+            <AddItemForm addItem={addTask}/>
             <ul>
                 {mappedTodolist}
             </ul>

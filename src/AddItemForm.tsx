@@ -20,7 +20,7 @@ const AddItemForm = (props: AddItemFormPropsType) => {
     }
 
     const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if(title.trim() !== '') {
+        if (title.trim() !== '') {
             if (e.key === 'Enter') {
                 props.addItem(title)
                 setTitle('')
