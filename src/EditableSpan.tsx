@@ -30,7 +30,7 @@ export const EditableSpan: FC<EditableSpanPropsType> = (
     return (
         editMode
             ? <input value={inputValue}
-                     autoFocus={true}
+                     autoFocus
                      onBlur={activateViewModeHandler}
                      onChange={onChangeInputValue}
             />
