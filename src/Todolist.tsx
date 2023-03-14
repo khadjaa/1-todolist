@@ -1,6 +1,7 @@
-import {FilterValuesType} from "./App";
+import App, {FilterValuesType} from "./App";
 import './App.css'
 import {ChangeEvent, KeyboardEvent, useState} from "react";
+import AddItemForm from "./AddItemForm";
 
 type PropsType = {
     todoListId: string
@@ -21,24 +22,7 @@ type TaskType = {
 
 export const Todolist = (props: PropsType) => {
 
-    const [title, setTitle] = useState('')
     const [filterValue, setFilterValue] = useState('all')
-
-    const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-    }
-
-    const onClickAddTaskHandler = () => {
-        props.addTask(props.todoListId, title)
-        setTitle('')
-    }
-
-    const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            props.addTask(props.todoListId, title)
-            setTitle('')
-        }
-    }
 
     const onClickRemoveTaskHandler = (el: string) => {
         props.removeTask(props.todoListId, el)
@@ -55,6 +39,10 @@ export const Todolist = (props: PropsType) => {
 
     const removeTodoListHandler = () => {
         props.removeTodoList(props.todoListId)
+    }
+
+    const addTask = (title: string) => {
+        props.addTask(props.todoListId, title)
     }
 
     const mappedTodolist = props.tasks.map((el) => {
@@ -75,10 +63,7 @@ export const Todolist = (props: PropsType) => {
             <h3>{props.title}
                 <button onClick={removeTodoListHandler}>x</button>
             </h3>
-            <div>
-                <input value={title} onChange={onChangeTitleHandler} onKeyDown={onKeyDownAddTaskHandler}/>
-                <button onClick={onClickAddTaskHandler}>+</button>
-            </div>
+                <AddItemForm addItem={addTask}/>
             <ul>
                 {mappedTodolist}
             </ul>

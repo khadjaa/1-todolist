@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from "uuid";
+import AddItemForm from "./AddItemForm";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -54,8 +55,17 @@ function App() {
         console.log(tasks)
     }
 
+    const addTodoList = (titleTodoList: string)=> {
+        const newTodoList = {
+             id: v1(), title: titleTodoList, filter: 'all'
+        }
+        setTodoList([newTodoList, ...todoLists])
+        setTasks({...tasks, [newTodoList.id]: []})
+    }
+
     return (
         <div className="App">
+            <AddItemForm addItem={addTodoList}/>
             {todoLists.map(el => {
 
                 let tasksForTodolist = tasks[el.id]
