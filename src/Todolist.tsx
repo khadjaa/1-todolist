@@ -5,6 +5,7 @@ import AddItemForm from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Button from "@mui/material/Button";
 
 type PropsType = {
     todoListId: string
@@ -86,15 +87,21 @@ export const Todolist = (props: PropsType) => {
                 {mappedTodolist}
             </ul>
             <div>
-                <button className={filterValue === 'all' ? 'active-filter' : ''}
-                        onClick={() => tsarOnClickChangeFilterHandler('all')}>All
-                </button>
-                <button className={filterValue === 'active' ? 'active-filter' : ''}
-                        onClick={() => tsarOnClickChangeFilterHandler('active')}>Active
-                </button>
-                <button className={filterValue === 'completed' ? 'active-filter' : ''}
-                        onClick={() => tsarOnClickChangeFilterHandler('completed')}>Completed
-                </button>
+                <Button variant={filterValue === 'all' ? 'outlined' : 'text'}
+                        onClick={() => tsarOnClickChangeFilterHandler('all')}
+                        color={'info'}
+                >All
+                </Button>
+                <Button variant={filterValue === 'active' ? 'outlined' : 'text'}
+                        onClick={() => tsarOnClickChangeFilterHandler('active')}
+                        color={'warning'}
+                >Active
+                </Button>
+                <Button variant={filterValue === 'completed' ? 'outlined' : 'text'}
+                        onClick={() => tsarOnClickChangeFilterHandler('completed')}
+                        color={'success'}
+                >Completed
+                </Button>
             </div>
         </div>
     )
