@@ -1,6 +1,4 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import Button from "@mui/material/Button";
-import {styled} from "@mui/material";
 import TextField from '@mui/material/TextField';
 import IconButton from "@mui/material/IconButton";
 import {AddBox} from "@mui/icons-material";
@@ -35,19 +33,19 @@ const AddItemForm = (props: AddItemFormPropsType) => {
         }
     }
 
-    const ButtonStyled = styled(Button)({
-        backgroundColor: '#0063cc',
-        maxWidth: '30px',
-        maxHeight: '30px',
-        minWidth: '30px',
-        minHeight: '30px',
-
-        '&:hover': {
-            backgroundColor: '#0069d9',
-            borderColor: '#0062cc',
-            boxShadow: 'none',
-        }
-    })
+    // const ButtonStyled = styled(Button)({
+    //     backgroundColor: '#0063cc',
+    //     maxWidth: '30px',
+    //     maxHeight: '30px',
+    //     minWidth: '30px',
+    //     minHeight: '30px',
+    //
+    //     '&:hover': {
+    //         backgroundColor: '#0069d9',
+    //         borderColor: '#0062cc',
+    //         boxShadow: 'none',
+    //     }
+    // })
 
     return (
         <div>
