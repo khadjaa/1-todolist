@@ -3,6 +3,8 @@ import './App.css'
 import {useState} from "react";
 import AddItemForm from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type PropsType = {
     todoListId: string
@@ -64,8 +66,9 @@ export const Todolist = (props: PropsType) => {
                        onClick={(e) =>
                            changeCheckBoxHandler1(el.id, e.currentTarget.checked)}/>
                 <EditableSpan title={el.title} changeTaskTitle={changeTaskTitleHandler}/>
-                <button onClick={() => onClickRemoveTaskHandler(el.id)}>x
-                </button>
+                <IconButton onClick={() => onClickRemoveTaskHandler(el.id)}>
+                    <DeleteIcon />
+                </IconButton>
             </li>
         )
     })
@@ -74,7 +77,9 @@ export const Todolist = (props: PropsType) => {
         <div className={"title"}>
             <h3>
                 <EditableSpan title={props.title} changeTaskTitle={changeTodoListTitleHandler}/>
-                <button onClick={removeTodoListHandler}>x</button>
+                <IconButton onClick={removeTodoListHandler}>
+                    <DeleteIcon />
+                </IconButton>
             </h3>
             <AddItemForm addItem={addTask}/>
             <ul>
