@@ -1,6 +1,9 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import Button from "@mui/material/Button";
 import {styled} from "@mui/material";
+import TextField from '@mui/material/TextField';
+import IconButton from "@mui/material/IconButton";
+import {AddBox} from "@mui/icons-material";
 
 export type AddItemFormPropsType = {
     addItem: (newTitle: string) => void
@@ -9,6 +12,8 @@ export type AddItemFormPropsType = {
 const AddItemForm = (props: AddItemFormPropsType) => {
 
     const [title, setTitle] = useState('')
+    // const [error, setError] = useState('')
+
 
     const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
@@ -44,17 +49,24 @@ const AddItemForm = (props: AddItemFormPropsType) => {
         }
     })
 
-
-
     return (
         <div>
-            <input value={title}
-                   onChange={onChangeTitleHandler}
-                   onKeyDown={onKeyDownAddTaskHandler}/>
-            {/*<button onClick={onClickAddTaskHandler}>+</button>*/}
-            <ButtonStyled variant={'contained'}
-                    onClick={onClickAddTaskHandler}
-            >+</ButtonStyled>
+            <TextField variant={'outlined'}
+                       value={title}
+                       onChange={onChangeTitleHandler}
+                       onKeyDown={onKeyDownAddTaskHandler}
+                       label={'Title'}
+                // helperText={error}
+            />
+            {/*<ButtonStyled variant={'contained'}*/}
+            {/*              onClick={onClickAddTaskHandler}*/}
+            {/*>+</ButtonStyled>*/}
+            <IconButton
+                color='primary'
+                onClick={onClickAddTaskHandler}
+            >
+                <AddBox/>
+            </IconButton>
         </div>
     );
 };

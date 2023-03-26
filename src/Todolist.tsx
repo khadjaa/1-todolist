@@ -63,7 +63,7 @@ export const Todolist = (props: PropsType) => {
         }
 
         return (
-            <li key={el.id}>
+            <div key={el.id}>
                 <Checkbox
                     checked={el.isDone}
                     color='primary'
@@ -73,14 +73,15 @@ export const Todolist = (props: PropsType) => {
                 <IconButton onClick={() => onClickRemoveTaskHandler(el.id)}>
                     <DeleteIcon/>
                 </IconButton>
-            </li>
+            </div>
         )
     })
 
     return (
         <div className={"title"}>
             <h3>
-                <EditableSpan title={props.title} changeTaskTitle={changeTodoListTitleHandler}/>
+                <EditableSpan title={props.title}
+                              changeTaskTitle={changeTodoListTitleHandler}/>
                 <IconButton onClick={removeTodoListHandler}>
                     <DeleteIcon/>
                 </IconButton>

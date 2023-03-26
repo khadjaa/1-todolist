@@ -14,6 +14,7 @@ export const EditableSpan: FC<EditableSpanPropsType> = (
 
     const [editMode, setEditMode] = useState(false)
     const [inputValue, setInputValue] = useState('')
+    // const [error, setError] = useState(false)
 
     const activateEditModeHandler = () => {
         setEditMode(true)
@@ -25,6 +26,9 @@ export const EditableSpan: FC<EditableSpanPropsType> = (
     }
 
     const onChangeInputValue = (e: ChangeEvent<HTMLInputElement>) => {
+        // if (e.currentTarget.value === '') {
+        //     setError(true)
+        // }
         setInputValue(e.currentTarget.value)
     }
 
@@ -35,6 +39,9 @@ export const EditableSpan: FC<EditableSpanPropsType> = (
                        autoFocus
                        onChange={onChangeInputValue}
                        onBlur={activateViewModeHandler}
+                       // error={!!error}
+                       label={'Title'}
+                       // helperText={error}
             />
             : <span onDoubleClick={activateEditModeHandler}>{title}</span>
     );
