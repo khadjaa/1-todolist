@@ -26,9 +26,6 @@ export const EditableSpan: FC<EditableSpanPropsType> = (
     }
 
     const onChangeInputValue = (e: ChangeEvent<HTMLInputElement>) => {
-        // if (e.currentTarget.value === '') {
-        //     setError(true)
-        // }
         setInputValue(e.currentTarget.value)
     }
 

@@ -58,9 +58,6 @@ const AddItemForm = (props: AddItemFormPropsType) => {
                        label={'Title'}
                 // helperText={error}
             />
-            {/*<ButtonStyled variant={'contained'}*/}
-            {/*              onClick={onClickAddTaskHandler}*/}
-            {/*>+</ButtonStyled>*/}
             <IconButton
                 color='primary'
                 onClick={onClickAddTaskHandler}
