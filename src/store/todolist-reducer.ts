@@ -18,8 +18,8 @@ export const TodoListsReducer = (state: TodolistType[], action: TsarActionType) 
                 ? {...el, title: action.payload.newTodolistTitle}
                 : el)
         case 'CHANGE-TODOLIST-FILTER':
-            return state.map(el => el.id === action.id
-                ? {...el, filter: action.filter}
+            return state.map(el => el.id === action.payload.id
+                ? {...el, filter: action.payload.newFilter}
                 : el)
         default:
             throw new Error('I don\'t understand this type')
@@ -28,7 +28,8 @@ export const TodoListsReducer = (state: TodolistType[], action: TsarActionType) 
 
 type TsarActionType = ReturnType<typeof removeTodoListAC> |
     ReturnType<typeof addTodoListAC> |
-    ReturnType<typeof changeTodoListTitle>
+    ReturnType<typeof changeTodoListTitle> |
+    ReturnType<typeof changeTodoListFilter>
 
 export const removeTodoListAC = (id: string) => {
     return {
@@ -54,6 +55,16 @@ export const changeTodoListTitle = (id: string, newTodolistTitle: string) => {
         payload: {
             id,
             newTodolistTitle
+        }
+    } as const
+}
+
+export const changeTodoListFilter = (id: string, newFilter: string) => {
+    return {
+        type: 'CHANGE-TODOLIST-FILTER',
+        payload: {
+            id,
+            newFilter
         }
     } as const
 }
