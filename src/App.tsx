@@ -15,7 +15,7 @@ const todoListId_2 = v1()
 export type TodolistType = {
     id: string
     title: string
-    filter : string
+    filter : FilterValuesType
 }
 
 function App() {
@@ -67,7 +67,7 @@ function App() {
     }
 
     const addTodoList = (titleTodoList: string) => {
-        const newTodoList = {
+        const newTodoList: TodolistType = {
             id: v1(), title: titleTodoList, filter: 'all'
         }
         setTodoList([newTodoList, ...todoLists])
