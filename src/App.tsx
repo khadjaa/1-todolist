@@ -12,9 +12,15 @@ export type FilterValuesType = 'all' | 'active' | 'completed'
 const todoListId_1 = v1()
 const todoListId_2 = v1()
 
+export type TodolistType = {
+    id: string
+    title: string
+    filter : string
+}
+
 function App() {
 
-    const [todoLists, setTodoList] = useState([
+    const [todoLists, setTodoList] = useState<TodolistType[]>([
         {id: todoListId_1, title: 'What to Learn', filter: 'all'},
         {id: todoListId_2, title: 'What to Buy', filter: 'all'},
     ])
