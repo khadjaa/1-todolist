@@ -6,10 +6,10 @@ type ActionType = {
     [key: string]: any
 }
 
-export const TodoListsReducer = (state: TodolistType[], action: ActionType) => {
+export const TodoListsReducer = (state: TodolistType[], action: TsarActionType) => {
     switch (action.type) {
         case 'REMOVE-TODOLIST':
-            return state.filter(el => el.id !== action.id)
+            return state.filter(el => el.id !== action.payload.id)
         case 'ADD-TODOLIST':
             const newTodolist = {id: v1(), title: action.title, filter: 'all'}
             return [newTodolist, ...state]
@@ -25,6 +25,8 @@ export const TodoListsReducer = (state: TodolistType[], action: ActionType) => {
             throw new Error('I don\'t understand this type')
     }
 }
+
+type TsarActionType = ReturnType<typeof removeTodoListAC>
 
 export const removeTodoListAC = (id: string) => {
     return {
