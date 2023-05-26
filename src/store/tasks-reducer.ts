@@ -1,5 +1,6 @@
 import {TasksStateType, TaskType} from "../App";
 import {v1} from "uuid";
+import {addTodoListAC} from "./todolist-reducer";
 
 export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
     switch (action.type) {
@@ -35,6 +36,12 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
                         : t)
             }
         }
+        case "ADD-TODOLIST" : {
+            return {
+                ...state,
+                [action.payload.id]: []
+            }
+        }
         default:
             return state
     }
@@ -44,6 +51,7 @@ type ActionsType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof changeTaskStatusAC>
     | ReturnType<typeof changeTaskTitleAC>
+    | ReturnType<typeof addTodoListAC>
 
 export const removeTaskAC = (id: string, todolistId: string) => {
     return {
