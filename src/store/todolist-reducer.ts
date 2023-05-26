@@ -23,8 +23,8 @@ export const todolistsReducer = (state: TodolistType[], action: TsarActionType):
 
 type TsarActionType = ReturnType<typeof removeTodoListAC> |
     ReturnType<typeof addTodoListAC> |
-    ReturnType<typeof changeTodoListTitle> |
-    ReturnType<typeof changeTodoListFilter>
+    ReturnType<typeof changeTodoListTitleAC> |
+    ReturnType<typeof changeTodoListFilterAC>
 
 export const removeTodoListAC = (id: string) => {
     return {
@@ -45,7 +45,7 @@ export const addTodoListAC = (title: string) => {
     } as const
 }
 
-export const changeTodoListTitle = (id: string, newTodolistTitle: string) => {
+export const changeTodoListTitleAC = (id: string, newTodolistTitle: string) => {
     return {
         type: 'CHANGE-TODOLIST-TITLE',
         payload: {
@@ -55,7 +55,7 @@ export const changeTodoListTitle = (id: string, newTodolistTitle: string) => {
     } as const
 }
 
-export const changeTodoListFilter = (id: string, newFilter: FilterValuesType) => {
+export const changeTodoListFilterAC = (id: string, newFilter: FilterValuesType) => {
     return {
         type: 'CHANGE-TODOLIST-FILTER',
         payload: {
