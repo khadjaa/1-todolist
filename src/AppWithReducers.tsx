@@ -80,10 +80,10 @@ function App() {
     const removeTodoList = (todoListId: string) => {
         const action = removeTodoListAC(todoListId)
         dispatchToTodoList(action)
-
+        dispatchToTasks(action)
         // delete tasks[todoListId]
-        // console.log(tasks)
     }
+    console.log(tasks)
 
     const addTodoList = (titleTodoList: string) => {
         const action = addTodoListAC(titleTodoList)

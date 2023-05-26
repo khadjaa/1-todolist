@@ -17,7 +17,7 @@ export const todolistsReducer = (state: TodolistType[], action: TsarActionType):
                 ? {...el, filter: action.payload.newFilter}
                 : el)
         default:
-            throw new Error('I don\'t understand this type')
+            return state
     }
 }
 
