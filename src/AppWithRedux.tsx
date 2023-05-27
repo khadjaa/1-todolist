@@ -11,7 +11,6 @@ import {
     changeTodoListTitleAC,
     removeTodoListAC,
 } from "./store/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
 
@@ -36,23 +35,7 @@ export type TasksStateType = {
 function AppWithRedux() {
 
     const todoLists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists, shallowEqual)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
-
-    const addTask = (todoListId: string, newTitle: string) => {
-        const action = addTaskAC(newTitle, todoListId)
-        dispatch(action)
-    }
-
-    function removeTask(todoListId: string, id: string) {
-        const action = removeTaskAC(id, todoListId)
-        dispatch(action)
-    }
-
-    const changeChecked = (todoListId: string, id: string, newIsDone: boolean) => {
-        const action = changeTaskStatusAC(id, newIsDone, todoListId)
-        dispatch(action)
-    }
 
     function changeFilter(todoListId: string, value: FilterValuesType) {
         const action = changeTodoListFilterAC(todoListId, value)
@@ -62,17 +45,10 @@ function AppWithRedux() {
     const removeTodoList = (todoListId: string) => {
         const action = removeTodoListAC(todoListId)
         dispatch(action)
-        // delete tasks[todoListId]
     }
-    console.log(tasks)
 
     const addTodoList = (titleTodoList: string) => {
         const action = addTodoListAC(titleTodoList)
-        dispatch(action)
-    }
-
-    const changeTaskTitle = (todoListId: string, id: string, newTaskTitle: string) => {
-        const action = changeTaskTitleAC(id, newTaskTitle, todoListId)
         dispatch(action)
     }
 
@@ -90,29 +66,14 @@ function AppWithRedux() {
                 </Grid>
                 <Grid container spacing={3}>
                     {todoLists.map(el => {
-
-                        let tasksForTodolist = tasks[el.id]
-
-                        if (el.filter === 'active') {
-                            tasksForTodolist = tasks[el.id].filter(tasks => !tasks.isDone)
-                        }
-                        if (el.filter === 'completed') {
-                            tasksForTodolist = tasks[el.id].filter(tasks => tasks.isDone)
-                        }
-
                         return <Grid item key={el.id}>
                             <Paper style={{padding: '10px'}}>
                                 <Todolist
                                     key={el.id}
                                     todoListId={el.id}
                                     title={el.title}
-                                    tasks={tasksForTodolist}
-                                    removeTask={removeTask}
                                     changeFilter={changeFilter}
-                                    addTask={addTask}
-                                    changeChecked={changeChecked}
                                     removeTodoList={removeTodoList}
-                                    changeTaskTitle={changeTaskTitle}
                                     changeTodoListTitle={changeTodoListTitle}
                                 />
                             </Paper>
