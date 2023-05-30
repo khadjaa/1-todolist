@@ -7,11 +7,10 @@ export type AddItemFormPropsType = {
     addItem: (newTitle: string) => void
 }
 
-const AddItemForm = (props: AddItemFormPropsType) => {
+const AddItemForm = React.memo((props: AddItemFormPropsType) => {
 
     const [title, setTitle] = useState('')
     // const [error, setError] = useState('')
-
 
     const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
@@ -33,20 +32,6 @@ const AddItemForm = (props: AddItemFormPropsType) => {
         }
     }
 
-    // const ButtonStyled = styled(Button)({
-    //     backgroundColor: '#0063cc',
-    //     maxWidth: '30px',
-    //     maxHeight: '30px',
-    //     minWidth: '30px',
-    //     minHeight: '30px',
-    //
-    //     '&:hover': {
-    //         backgroundColor: '#0069d9',
-    //         borderColor: '#0062cc',
-    //         boxShadow: 'none',
-    //     }
-    // })
-
     return (
         <div>
             <TextField variant={'outlined'}
@@ -54,7 +39,6 @@ const AddItemForm = (props: AddItemFormPropsType) => {
                        onChange={onChangeTitleHandler}
                        onKeyDown={onKeyDownAddTaskHandler}
                        label={'Title'}
-                // helperText={error}
             />
             <IconButton
                 color='primary'
@@ -64,6 +48,6 @@ const AddItemForm = (props: AddItemFormPropsType) => {
             </IconButton>
         </div>
     );
-};
+})
 
 export default AddItemForm;
