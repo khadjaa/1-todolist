@@ -1,6 +1,5 @@
 import {FilterValuesType} from "./AppWithRedux";
 import './App.css'
-import {useState} from "react";
 import AddItemForm from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import IconButton from '@mui/material/IconButton';
@@ -10,6 +9,7 @@ import {Checkbox} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
+import React from "react";
 
 type PropsType = {
     todoListId: string
@@ -26,12 +26,10 @@ type TaskType = {
     isDone: boolean
 }
 
-export const Todolist = (props: PropsType) => {
+export const Todolist = React.memo((props: PropsType) => {
 
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[props.todoListId])
     const dispatch = useDispatch()
-
-    // const [filterValue, setFilterValue] = useState('all')
 
     const onClickRemoveTaskHandler = (id: string) => {
         dispatch(removeTaskAC(id, props.todoListId))
@@ -39,7 +37,6 @@ export const Todolist = (props: PropsType) => {
 
     const tsarOnClickChangeFilterHandler = (filterType: FilterValuesType) => {
         props.changeFilter(props.todoListId, filterType)
-        // setFilterValue(filterType)
     }
 
     const changeCheckBoxHandler1 = (tID: string, eventValue: boolean) => {
@@ -120,4 +117,4 @@ export const Todolist = (props: PropsType) => {
             </div>
         </div>
     )
-}
+})
