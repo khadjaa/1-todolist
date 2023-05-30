@@ -14,6 +14,7 @@ import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./
 type PropsType = {
     todoListId: string
     title: string
+    filter: string
     changeFilter: (todoListId: string, value: FilterValuesType) => void
     removeTodoList: (todoListId: string) => void
     changeTodoListTitle: (todoListId: string, newTodoListTitle: string) => void
@@ -30,7 +31,7 @@ export const Todolist = (props: PropsType) => {
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[props.todoListId])
     const dispatch = useDispatch()
 
-    const [filterValue, setFilterValue] = useState('all')
+    // const [filterValue, setFilterValue] = useState('all')
 
     const onClickRemoveTaskHandler = (id: string) => {
         dispatch(removeTaskAC(id, props.todoListId))
@@ -38,7 +39,7 @@ export const Todolist = (props: PropsType) => {
 
     const tsarOnClickChangeFilterHandler = (filterType: FilterValuesType) => {
         props.changeFilter(props.todoListId, filterType)
-        setFilterValue(filterType)
+        // setFilterValue(filterType)
     }
 
     const changeCheckBoxHandler1 = (tID: string, eventValue: boolean) => {
@@ -59,10 +60,10 @@ export const Todolist = (props: PropsType) => {
 
     let tasksForTodolist = tasks
 
-    if (filterValue === 'active') {
+    if (props.filter === 'active') {
         tasksForTodolist = tasks.filter(tasks => !tasks.isDone)
     }
-    if (filterValue === 'completed') {
+    if (props.filter === 'completed') {
         tasksForTodolist = tasks.filter(tasks => tasks.isDone)
     }
 
@@ -101,17 +102,17 @@ export const Todolist = (props: PropsType) => {
                 {mappedTodolist}
             </ul>
             <div>
-                <Button variant={filterValue === 'all' ? 'outlined' : 'text'}
+                <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
                         onClick={() => tsarOnClickChangeFilterHandler('all')}
                         color={'info'}
                 >All
                 </Button>
-                <Button variant={filterValue === 'active' ? 'outlined' : 'text'}
+                <Button variant={props.filter === 'active' ? 'outlined' : 'text'}
                         onClick={() => tsarOnClickChangeFilterHandler('active')}
                         color={'warning'}
                 >Active
                 </Button>
-                <Button variant={filterValue === 'completed' ? 'outlined' : 'text'}
+                <Button variant={props.filter === 'completed' ? 'outlined' : 'text'}
                         onClick={() => tsarOnClickChangeFilterHandler('completed')}
                         color={'success'}
                 >Completed
