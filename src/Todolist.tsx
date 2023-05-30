@@ -5,11 +5,11 @@ import {EditableSpan} from "./EditableSpan";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from "@mui/material/Button";
-import {Checkbox} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
+import {addTaskAC} from "./store/tasks-reducer";
 import React from "react";
+import {Task} from "./Task";
 
 type PropsType = {
     todoListId: string
@@ -31,16 +31,8 @@ export const Todolist = React.memo((props: PropsType) => {
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[props.todoListId])
     const dispatch = useDispatch()
 
-    const onClickRemoveTaskHandler = (id: string) => {
-        dispatch(removeTaskAC(id, props.todoListId))
-    }
-
     const tsarOnClickChangeFilterHandler = (filterType: FilterValuesType) => {
         props.changeFilter(props.todoListId, filterType)
-    }
-
-    const changeCheckBoxHandler1 = (tID: string, eventValue: boolean) => {
-        dispatch(changeTaskStatusAC(tID, eventValue, props.todoListId))
     }
 
     const removeTodoListHandler = () => {
@@ -64,26 +56,7 @@ export const Todolist = React.memo((props: PropsType) => {
         tasksForTodolist = tasks.filter(tasks => tasks.isDone)
     }
 
-    const mappedTodolist = tasksForTodolist.map((el) => {
-
-        const changeTaskTitleHandler = (title: string) => {
-            dispatch(changeTaskTitleAC(el.id, title, props.todoListId))
-        }
-
-        return (
-            <div key={el.id}>
-                <Checkbox
-                    checked={el.isDone}
-                    color='primary'
-                    onChange={(e) => changeCheckBoxHandler1(el.id, e.currentTarget.checked)}
-                />
-                <EditableSpan title={el.title} changeTaskTitle={changeTaskTitleHandler}/>
-                <IconButton onClick={() => onClickRemoveTaskHandler(el.id)}>
-                    <DeleteIcon/>
-                </IconButton>
-            </div>
-        )
-    })
+    const mappedTodolist = tasksForTodolist.map((el) => <Task task={el} todoListId={props.todoListId} key={el.id}/>)
 
     return (
         <div className={"title"}>
