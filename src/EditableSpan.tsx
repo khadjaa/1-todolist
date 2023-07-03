@@ -6,11 +6,13 @@ export type EditableSpanPropsType = {
     changeTaskTitle: (title: string) => void
 }
 
-export const EditableSpan: FC<EditableSpanPropsType> = (
+export const EditableSpan: FC<EditableSpanPropsType> = React.memo((
     {
         title,
         changeTaskTitle
     }) => {
+
+    console.log('EditSpan')
 
     const [editMode, setEditMode] = useState(false)
     const [inputValue, setInputValue] = useState('')
@@ -42,5 +44,4 @@ export const EditableSpan: FC<EditableSpanPropsType> = (
             />
             : <span onDoubleClick={activateEditModeHandler}>{title}</span>
     );
-};
-
+})

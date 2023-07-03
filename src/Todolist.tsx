@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
 import {addTaskAC} from "./store/tasks-reducer";
-import React from "react";
+import React, {useCallback} from "react";
 import {Task} from "./Task";
 
 type PropsType = {
@@ -28,12 +28,13 @@ type TaskType = {
 
 export const Todolist = React.memo((props: PropsType) => {
 
+    console.log('todolist')
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[props.todoListId])
     const dispatch = useDispatch()
 
-    const tsarOnClickChangeFilterHandler = (filterType: FilterValuesType) => {
+    const tsarOnClickChangeFilterHandler = useCallback((filterType: FilterValuesType) => {
         props.changeFilter(props.todoListId, filterType)
-    }
+    },[])
 
     const removeTodoListHandler = () => {
         props.removeTodoList(props.todoListId)
@@ -43,9 +44,9 @@ export const Todolist = React.memo((props: PropsType) => {
         dispatch(addTaskAC(title, props.todoListId))
     }
 
-    const changeTodoListTitleHandler = (title: string) => {
+    const changeTodoListTitleHandler = useCallback((title: string) => {
         props.changeTodoListTitle(props.todoListId, title)
-    }
+    },[])
 
     let tasksForTodolist = tasks
 
@@ -56,7 +57,7 @@ export const Todolist = React.memo((props: PropsType) => {
         tasksForTodolist = tasks.filter(tasks => tasks.isDone)
     }
 
-    const mappedTodolist = tasksForTodolist.map((el) => <Task task={el} todoListId={props.todoListId} key={el.id}/>)
+    const mappedTodolist = tasksForTodolist?.map((el) => <Task task={el} todoListId={props.todoListId} key={el.id}/>)
 
     return (
         <div className={"title"}>

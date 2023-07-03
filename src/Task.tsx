@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
 import {Checkbox} from "@mui/material";
 import {EditableSpan} from "./EditableSpan";
@@ -12,15 +12,15 @@ type TaskPropsType = {
     todoListId: string
 }
 
-export const Task = (props: TaskPropsType) => {
+export const Task = React.memo((props: TaskPropsType) => {
 
     const dispatch = useDispatch()
 
-    const changeTaskTitleHandler = (title: string) => {
+    const changeTaskTitleHandler = useCallback((title: string) => {
         dispatch(changeTaskTitleAC(props.task.id, title, props.todoListId))
-    }
+    },[] )
 
-    const changeCheckBoxHandler1 = (tID: string, eventValue: boolean) => {
+    const changeCheckBoxHandler = (tID: string, eventValue: boolean) => {
         dispatch(changeTaskStatusAC(tID, eventValue, props.todoListId))
     }
 
@@ -33,15 +33,13 @@ export const Task = (props: TaskPropsType) => {
             <Checkbox
                 checked={props.task.isDone}
                 color='primary'
-                onChange={(e) => changeCheckBoxHandler1(props.task.id, e.currentTarget.checked)}
+                onChange={(e) => changeCheckBoxHandler(props.task.id, e.currentTarget.checked)}
             />
             <EditableSpan title={props.task.title} changeTaskTitle={changeTaskTitleHandler}/>
-            <IconButton
-                onClick={() => onClickRemoveTaskHandler(props.task.id)}
-            >
+            <IconButton onClick={() => onClickRemoveTaskHandler(props.task.id)}>
                 <DeleteIcon/>
             </IconButton>
         </div>
     )
-}
+})
 

@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import AddItemForm from "./AddItemForm";
@@ -6,13 +6,11 @@ import ButtonAppBar from "./ButtonAppBar";
 import {Container, Grid} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import {
-    addTodoListAC,
-    changeTodoListFilterAC,
-    changeTodoListTitleAC,
-    removeTodoListAC,
+    changeTodoListFilterAC, changeTodolistTC,
+    createTodolistTC, deleteTodolistTC, getTodolistsTC,
 } from "./store/todolists-reducer";
-import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store/store";
+import {shallowEqual, useSelector} from "react-redux";
+import {AppRootStateType, useAppDispatch} from "./store/store";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -35,7 +33,11 @@ export type TasksStateType = {
 function AppWithRedux() {
 
     const todoLists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists, shallowEqual)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(getTodolistsTC())
+    }, [])
 
     const changeFilter = useCallback((todoListId: string, value: FilterValuesType) => {
         const action = changeTodoListFilterAC(todoListId, value)
@@ -43,18 +45,15 @@ function AppWithRedux() {
     },[])
 
     const removeTodoList = useCallback((todoListId: string) => {
-        const action = removeTodoListAC(todoListId)
-        dispatch(action)
+        dispatch(deleteTodolistTC(todoListId))
     },[])
 
     const addTodoList = useCallback((titleTodoList: string) => {
-        const action = addTodoListAC(titleTodoList)
-        dispatch(action)
+        dispatch(createTodolistTC(titleTodoList))
     },[])
 
     const changeTodoListTitle = useCallback((todoListId: string, newTodoListTitle: string) => {
-        const action = changeTodoListTitleAC(todoListId, newTodoListTitle)
-        dispatch(action)
+        dispatch(changeTodolistTC(todoListId, newTodoListTitle))
     },[])
 
     return (
