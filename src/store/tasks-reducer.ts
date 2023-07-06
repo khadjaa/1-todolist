@@ -1,8 +1,7 @@
-import {TaskType} from "../AppWithRedux";
-import {v1} from "uuid";
 import {addTodoListAC, removeTodoListAC} from "./todolists-reducer";
 import {Dispatch} from "redux";
-import {todolistAPI} from "../api/todolist-api";
+import {TaskStatuses, TaskType, todolistAPI} from "../api/todolist-api";
+import {AppRootStateType} from "./store";
 
 const initialState: TasksStateType = {}
 export type TasksStateType = {
@@ -25,10 +24,9 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             }
         }
         case "ADD-TASK": {
-            const newTask: TaskType = {id: v1(), title: action.payload.title, isDone: false}
             return {
                 ...state,
-                [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
+                [action.payload.task.todoListId]: [action.payload.task, ...state[action.payload.task.todoListId]]
             }
         }
         case "CHANGE-TASK-STATUS": {
@@ -36,7 +34,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
                 ...state,
                 [action.payload.todolistId]: state[action.payload.todolistId]
                     .map(t => t.id === action.payload.id
-                        ? {...t, isDone: action.payload.newIsDone}
+                        ? {...t, status: action.payload.status}
                         : t)
             }
         }
@@ -83,22 +81,21 @@ export const removeTaskAC = (id: string, todolistId: string) => {
     } as const
 }
 
-export const addTaskAC = (title: string, todolistId: string) => {
+export const addTaskAC = (task: TaskType) => {
     return {
         type: 'ADD-TASK',
         payload: {
-            title,
-            todolistId,
+            task
         }
     } as const
 }
-export const changeTaskStatusAC = (id: string, newIsDone: boolean, todolistId: string) => {
+export const changeTaskStatusAC = (id: string, todolistId: string, status: TaskStatuses) => {
     return {
         type: 'CHANGE-TASK-STATUS',
         payload: {
             id,
-            newIsDone,
             todolistId,
+            status
         }
     } as const
 }
@@ -122,21 +119,40 @@ export const setTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
         dispatch(setTasksAC(todolistId, res.data.items))
     })
 }
-
 export const createTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
     todolistAPI.createTask(todolistId, title).then((res) => {
-        dispatch(addTaskAC(title, todolistId))
+        dispatch(addTaskAC(res.data.data.item))
     })
 }
-
-export const updateTaskTC = (id: string, newIsDone: boolean, todolistId: string) => (dispatch: Dispatch) => {
-    todolistAPI.updateTask(id, newIsDone, todolistId).then((res) => {
-        dispatch(changeTaskStatusAC(id, newIsDone, todolistId))
-    })
-}
-
 export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispatch) => {
     todolistAPI.deleteTask(id, todolistId).then((res) => {
         dispatch(removeTaskAC(id, todolistId))
     })
+}
+export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses) => {
+    return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+
+// так как мы обязаны на сервер отправить все св-ва, которые сервер ожидает, а не только
+// те, которые мы хотим обновить, соответственно нам нужно в этом месте взять таску целиком  // чтобы у неё отобрать остальные св-ва
+
+        const allTasksFromState = getState().tasks;
+        const tasksForCurrentTodolist = allTasksFromState[todolistId]
+        const task = tasksForCurrentTodolist.find(t => {
+            return t.id === taskId
+        })
+
+        if (task) {
+            todolistAPI.updateTask(todolistId, taskId, {
+                title: task.title,
+                startDate: task.startDate,
+                priority: task.priority,
+                description: task.description,
+                deadline: task.deadline,
+                status: status
+            }).then(() => {
+                const action = changeTaskStatusAC(taskId, todolistId, status)
+                dispatch(action)
+            })
+        }
+    }
 }

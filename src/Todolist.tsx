@@ -10,6 +10,7 @@ import {createTaskTC, setTasksTC} from "./store/tasks-reducer";
 import React, {useCallback, useEffect} from "react";
 import {Task} from "./Task";
 import {FilterValuesType} from "./store/todolists-reducer";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
 
 type PropsType = {
     todoListId: string
@@ -18,12 +19,6 @@ type PropsType = {
     changeFilter: (todoListId: string, value: FilterValuesType) => void
     removeTodoList: (todoListId: string) => void
     changeTodoListTitle: (todoListId: string, newTodoListTitle: string) => void
-}
-
-type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
 }
 
 export const Todolist = React.memo((props: PropsType) => {
@@ -54,10 +49,10 @@ export const Todolist = React.memo((props: PropsType) => {
     let tasksForTodolist = tasks
 
     if (props.filter === 'active') {
-        tasksForTodolist = tasks.filter(tasks => !tasks.isDone)
+        tasksForTodolist = tasks.filter(task => task.status === TaskStatuses.New)
     }
     if (props.filter === 'completed') {
-        tasksForTodolist = tasks.filter(tasks => tasks.isDone)
+        tasksForTodolist = tasks.filter(task => task.status === TaskStatuses.Completed)
     }
 
     const mappedTodolist = tasksForTodolist?.map((el) => <Task task={el} todoListId={props.todoListId} key={el.id}/>)

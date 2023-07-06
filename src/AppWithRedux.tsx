@@ -12,12 +12,6 @@ import {
 import {shallowEqual, useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store/store";
 
-export type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean
-}
-
 function AppWithRedux() {
 
     const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists, shallowEqual)
