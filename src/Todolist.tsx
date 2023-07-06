@@ -1,4 +1,3 @@
-import {FilterValuesType} from "./AppWithRedux";
 import './App.css'
 import AddItemForm from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -10,6 +9,7 @@ import {AppRootStateType} from "./store/store";
 import {addTaskAC} from "./store/tasks-reducer";
 import React, {useCallback} from "react";
 import {Task} from "./Task";
+import {FilterValuesType} from "./store/todolists-reducer";
 
 type PropsType = {
     todoListId: string

@@ -8,7 +8,7 @@ const instance = axios.create({
     },
 })
 
-export type TodolistFromSRType = {
+export type TodolistType = {
     id: string,
     title: string,
     addedDate: string,
@@ -24,11 +24,11 @@ export type ResponseType<D = {}> = {
 
 export const todolistAPI = {
     getTodolist() {
-        return instance.get<TodolistFromSRType[]>(`todo-lists`)
+        return instance.get<TodolistType[]>(`todo-lists`)
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{ item: TodolistFromSRType }>, AxiosResponse<ResponseType<{
-            item: TodolistFromSRType
+        return instance.post<ResponseType<{ item: TodolistType }>, AxiosResponse<ResponseType<{
+            item: TodolistType
         }>>, { title: string }>(`todo-lists`, {title})
     },
     updateTodolist(todolistId: string, title: string) {

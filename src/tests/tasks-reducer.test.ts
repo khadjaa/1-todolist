@@ -1,6 +1,12 @@
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer'
-import { TasksStateType } from '../AppWithRedux'
-import {addTodoListAC} from "./todolists-reducer";
+import {
+    addTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    tasksReducer,
+    TasksStateType
+} from '../store/tasks-reducer'
+import {addTodoListAC} from "../store/todolists-reducer";
 
 let startState: TasksStateType
 

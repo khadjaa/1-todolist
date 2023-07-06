@@ -7,18 +7,10 @@ import {Container, Grid} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import {
     changeTodoListFilterAC, changeTodolistTC,
-    createTodolistTC, deleteTodolistTC, getTodolistsTC,
+    createTodolistTC, deleteTodolistTC, FilterValuesType, getTodolistsTC, TodolistDomainType,
 } from "./store/todolists-reducer";
 import {shallowEqual, useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store/store";
-
-export type FilterValuesType = 'all' | 'active' | 'completed'
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
 
 export type TaskType = {
     id: string,
@@ -26,13 +18,9 @@ export type TaskType = {
     isDone: boolean
 }
 
-export type TasksStateType = {
-    [key: string]: Array<TaskType>
-}
-
 function AppWithRedux() {
 
-    const todoLists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists, shallowEqual)
+    const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists, shallowEqual)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
