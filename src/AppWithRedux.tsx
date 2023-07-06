@@ -6,7 +6,7 @@ import ButtonAppBar from "./ButtonAppBar";
 import {Container, Grid} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import {
-    changeTodoListFilterAC, changeTodolistTC,
+    changeTodoListFilterAC, updateTodolistTC,
     createTodolistTC, deleteTodolistTC, FilterValuesType, getTodolistsTC, TodolistDomainType,
 } from "./store/todolists-reducer";
 import {shallowEqual, useSelector} from "react-redux";
@@ -41,7 +41,7 @@ function AppWithRedux() {
     },[])
 
     const changeTodoListTitle = useCallback((todoListId: string, newTodoListTitle: string) => {
-        dispatch(changeTodolistTC(todoListId, newTodoListTitle))
+        dispatch(updateTodolistTC(todoListId, newTodoListTitle))
     },[])
 
     return (

@@ -4,10 +4,10 @@ import {EditableSpan} from "./EditableSpan";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from "@mui/material/Button";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store/store";
-import {addTaskAC} from "./store/tasks-reducer";
-import React, {useCallback} from "react";
+import {useSelector} from "react-redux";
+import {AppRootStateType, useAppDispatch} from "./store/store";
+import {createTaskTC, setTasksTC} from "./store/tasks-reducer";
+import React, {useCallback, useEffect} from "react";
 import {Task} from "./Task";
 import {FilterValuesType} from "./store/todolists-reducer";
 
@@ -28,25 +28,28 @@ type TaskType = {
 
 export const Todolist = React.memo((props: PropsType) => {
 
-    console.log('todolist')
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[props.todoListId])
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(setTasksTC(props.todoListId))
+    }, [])
 
     const tsarOnClickChangeFilterHandler = useCallback((filterType: FilterValuesType) => {
         props.changeFilter(props.todoListId, filterType)
-    },[])
+    }, [])
 
     const removeTodoListHandler = () => {
         props.removeTodoList(props.todoListId)
     }
 
     const addTask = (title: string) => {
-        dispatch(addTaskAC(title, props.todoListId))
+        dispatch(createTaskTC(props.todoListId, title))
     }
 
     const changeTodoListTitleHandler = useCallback((title: string) => {
         props.changeTodoListTitle(props.todoListId, title)
-    },[])
+    }, [])
 
     let tasksForTodolist = tasks
 
