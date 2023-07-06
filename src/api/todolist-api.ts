@@ -24,16 +24,17 @@ export type ResponseType<D = {}> = {
 
 export const todolistAPI = {
     getTodolist() {
-        return instance.get(`todo-lists`)
+        return instance.get<TodolistFromSRType[]>(`todo-lists`)
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{ item: TodolistFromSRType }>, AxiosResponse<ResponseType<{ item: TodolistFromSRType }>>, { title: string }>(`todo-lists`, {title})
+        return instance.post<ResponseType<{ item: TodolistFromSRType }>, AxiosResponse<ResponseType<{
+            item: TodolistFromSRType
+        }>>, { title: string }>(`todo-lists`, {title})
     },
     updateTodolist(todolistId: string, title: string) {
-        const promise = instance.put(`todo-lists/${todolistId}`, { title: title })
-        return promise
+        return instance.put<ResponseType, AxiosResponse<ResponseType>, { title: string }>(`todo-lists/${todolistId}`, {title: title})
     },
     deleteTodoList(todolistId: string) {
-        return instance.delete(`todo-lists/${todolistId}`)
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     }
 }
