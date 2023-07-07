@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {todolistAPI, TodolistType,} from "../../api/todolist-api";
+import {setAppStatusAC} from "../../app/app-reducer";
 
 type ActionsType = ReturnType<typeof removeTodoListAC> |
     ReturnType<typeof addTodoListAC> |
@@ -39,38 +40,16 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
 }
 
 export const removeTodoListAC = (id: string) => {
-    return {
-        type: 'REMOVE-TODOLIST',
-        payload: {
-            id
-        }
-    } as const
+    return {type: 'REMOVE-TODOLIST', payload: {id}} as const
 }
 export const addTodoListAC = (item: TodolistType) => {
-    return {
-        type: 'ADD-TODOLIST',
-        payload: {
-            item
-        }
-    } as const
+    return {type: 'ADD-TODOLIST', payload: {item}} as const
 }
 export const changeTodoListTitleAC = (id: string, newTodolistTitle: string) => {
-    return {
-        type: 'CHANGE-TODOLIST-TITLE',
-        payload: {
-            id,
-            newTodolistTitle
-        }
-    } as const
+    return {type: 'CHANGE-TODOLIST-TITLE', payload: {id, newTodolistTitle}} as const
 }
 export const changeTodoListFilterAC = (id: string, newFilter: FilterValuesType) => {
-    return {
-        type: 'CHANGE-TODOLIST-FILTER',
-        payload: {
-            id,
-            newFilter
-        }
-    } as const
+    return {type: 'CHANGE-TODOLIST-FILTER', payload: {id, newFilter}} as const
 }
 
 type SetTodolistsActionType = {
@@ -81,8 +60,10 @@ export const setTodolistsAC = (todolists: TodolistType[]): SetTodolistsActionTyp
     return {type: 'SET-TODOLISTS', todolists}
 }
 export const getTodolistsTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.getTodolist().then((res) => {
         dispatch(setTodolistsAC(res.data))
+        dispatch(setAppStatusAC('succeeded'))
     })
 }
 export const updateTodolistTC = (todoListId: string, newTodoListTitle: string) => (dispatch: Dispatch) => {

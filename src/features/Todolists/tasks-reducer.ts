@@ -72,44 +72,18 @@ type ActionsType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof setTasksAC>
 
 export const removeTaskAC = (id: string, todolistId: string) => {
-    return {
-        type: 'REMOVE-TASK',
-        payload: {
-            id,
-            todolistId,
-        }
-    } as const
+    return {type: 'REMOVE-TASK', payload: {id, todolistId,}} as const
 }
 
 export const addTaskAC = (task: TaskType) => {
-    return {
-        type: 'ADD-TASK',
-        payload: {
-            task
-        }
-    } as const
+    return {type: 'ADD-TASK', payload: {task}} as const
 }
 export const changeTaskStatusAC = (id: string, todolistId: string, status: TaskStatuses) => {
-    return {
-        type: 'CHANGE-TASK-STATUS',
-        payload: {
-            id,
-            todolistId,
-            status
-        }
-    } as const
+    return {type: 'CHANGE-TASK-STATUS', payload: {id, todolistId, status}} as const
 }
 export const changeTaskTitleAC = (id: string, newTitle: string, todolistId: string) => {
-    return {
-        type: 'CHANGE-TASK-TITLE',
-        payload: {
-            id,
-            newTitle,
-            todolistId,
-        }
-    } as const
+    return {type: 'CHANGE-TASK-TITLE', payload: {id, newTitle, todolistId,}} as const
 }
-
 const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
     return {type: 'SET-TASKS', todolistId, tasks} as const
 }
@@ -131,9 +105,6 @@ export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispa
 }
 export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses) => {
     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
-
-// так как мы обязаны на сервер отправить все св-ва, которые сервер ожидает, а не только
-// те, которые мы хотим обновить, соответственно нам нужно в этом месте взять таску целиком  // чтобы у неё отобрать остальные св-ва
 
         const allTasksFromState = getState().tasks;
         const tasksForCurrentTodolist = allTasksFromState[todolistId]
