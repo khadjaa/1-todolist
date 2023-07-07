@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {Todolist} from "./Todolist";
-import AddItemForm from "./AddItemForm";
-import ButtonAppBar from "./ButtonAppBar";
+import {Todolist} from "../features/Todolists/Todolist/Todolist";
+import AddItemForm from "../components/AddItemForm/AddItemForm";
+import ButtonAppBar from "../components/ButtonAppBar/ButtonAppBar";
 import {Container, Grid} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import {
     changeTodoListFilterAC, updateTodolistTC,
     createTodolistTC, deleteTodolistTC, FilterValuesType, getTodolistsTC, TodolistDomainType,
-} from "./store/todolists-reducer";
+} from "../features/Todolists/todolists-reducer";
 import {shallowEqual, useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "./store/store";
+import {AppRootStateType, useAppDispatch} from "./store";
 
 function AppWithRedux() {
 

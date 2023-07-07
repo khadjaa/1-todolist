@@ -1,5 +1,5 @@
 export {}
-// import React, {useReducer} from 'react';
+// import React, {useState} from 'react';
 // import './App.css';
 // import {Todolist} from "./Todolist";
 // import {v1} from "uuid";
@@ -7,14 +7,6 @@ export {}
 // import ButtonAppBar from "./ButtonAppBar";
 // import {Container, Grid} from "@mui/material";
 // import Paper from '@mui/material/Paper';
-// import {
-//     addTodoListAC,
-//     changeTodoListFilterAC,
-//     changeTodoListTitleAC,
-//     removeTodoListAC,
-//     todolistsReducer
-// } from "./store/todolists-reducer";
-// import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./store/tasks-reducer";
 //
 // export type FilterValuesType = 'all' | 'active' | 'completed'
 //
@@ -37,13 +29,14 @@ export {}
 //     [key: string]: Array<TaskType>
 // }
 //
-// function AppWithReducers() {
+// function App() {
 //
-//     let [todoLists, dispatchToTodoList] = useReducer(todolistsReducer, [
+//     const [todoLists, setTodoList] = useState<TodolistType[]>([
 //         {id: todoListId_1, title: 'What to Learn', filter: 'all'},
 //         {id: todoListId_2, title: 'What to Buy', filter: 'all'},
 //     ])
-//     let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
+//
+//     const [tasks, setTasks] = useState<TasksStateType>({
 //         [todoListId_1]: [
 //             {id: v1(), title: "HTML&CSS", isDone: true},
 //             {id: v1(), title: "JS", isDone: true},
@@ -59,47 +52,48 @@ export {}
 //     })
 //
 //     const addTask = (todoListId: string, newTitle: string) => {
-//         const action = addTaskAC(newTitle, todoListId)
-//         dispatchToTasks(action)
+//         const newTask = {id: v1(), title: newTitle, isDone: true}
+//         setTasks({...tasks, [todoListId]: [newTask, ...tasks[todoListId]]})
 //     }
 //
 //     function removeTask(todoListId: string, id: string) {
-//         const action = removeTaskAC(id, todoListId)
-//         dispatchToTasks(action)
+//         setTasks({...tasks, [todoListId]: [...tasks[todoListId].filter(el => el.id !== id)]})
 //     }
 //
 //     const changeChecked = (todoListId: string, id: string, newIsDone: boolean) => {
-//         const action = changeTaskStatusAC(id, newIsDone, todoListId)
-//         dispatchToTasks(action)
+//         setTasks({
+//             ...tasks, [todoListId]: [...tasks[todoListId]
+//                 .map(el => el.id === id ? {...el, isDone: newIsDone} : el)]
+//         })
 //     }
 //
 //     function changeFilter(todoListId: string, value: FilterValuesType) {
-//         const action = changeTodoListFilterAC(todoListId, value)
-//         dispatchToTodoList(action)
+//         setTodoList([...todoLists.map(el => el.id === todoListId ? {...el, filter: value} : el)])
 //     }
 //
 //     const removeTodoList = (todoListId: string) => {
-//         const action = removeTodoListAC(todoListId)
-//         dispatchToTodoList(action)
-//         dispatchToTasks(action)
-//         // delete tasks[todoListId]
+//         setTodoList(todoLists.filter(el => el.id !== todoListId))
+//         delete tasks[todoListId]
+//         console.log(tasks)
 //     }
-//     console.log(tasks)
 //
 //     const addTodoList = (titleTodoList: string) => {
-//         const action = addTodoListAC(titleTodoList)
-//         dispatchToTodoList(action)
-//         dispatchToTasks(action)
+//         const newTodoList: TodolistType = {
+//             id: v1(), title: titleTodoList, filter: 'all'
+//         }
+//         setTodoList([newTodoList, ...todoLists])
+//         setTasks({...tasks, [newTodoList.id]: []})
 //     }
 //
 //     const changeTaskTitle = (todoListId: string, id: string, newTaskTitle: string) => {
-//         const action = changeTaskTitleAC(id, newTaskTitle, todoListId)
-//         dispatchToTasks(action)
+//         setTasks({
+//             ...tasks, [todoListId]: [...tasks[todoListId]
+//                 .map(el => el.id === id ? {...el, title: newTaskTitle} : el)]
+//         })
 //     }
 //
 //     function changeTodoListTitle(todoListId: string, newTodoListTitle: string) {
-//         const action = changeTodoListTitleAC(todoListId, newTodoListTitle)
-//         dispatchToTodoList(action)
+//         setTodoList([...todoLists.map(el => el.id === todoListId ? {...el, title: newTodoListTitle} : el)])
 //     }
 //
 //     return (
@@ -121,7 +115,7 @@ export {}
 //                             tasksForTodolist = tasks[el.id].filter(tasks => tasks.isDone)
 //                         }
 //
-//                         return <Grid item key={el.id}>
+//                         return <Grid item>
 //                             <Paper style={{padding: '10px'}}>
 //                                 <Todolist
 //                                     key={el.id}
@@ -146,4 +140,4 @@ export {}
 //     );
 // }
 //
-// export default AppWithReducers;
+// export default App;

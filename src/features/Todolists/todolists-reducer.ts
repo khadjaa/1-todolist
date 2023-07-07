@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {todolistAPI, TodolistType,} from "../api/todolist-api";
+import {todolistAPI, TodolistType,} from "../../api/todolist-api";
 
 type ActionsType = ReturnType<typeof removeTodoListAC> |
     ReturnType<typeof addTodoListAC> |

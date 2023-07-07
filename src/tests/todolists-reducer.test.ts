@@ -4,7 +4,7 @@ import {
     changeTodoListTitleAC, FilterValuesType,
     removeTodoListAC, TodolistDomainType,
     todolistsReducer
-} from '../store/todolists-reducer'
+} from '../features/Todolists/todolists-reducer'
 import {v1} from 'uuid'
 
 let todolistId1: string

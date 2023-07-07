@@ -6,8 +6,8 @@ export {}
 //     removeTaskAC,
 //     tasksReducer,
 //     TasksStateType
-// } from '../store/tasks-reducer'
-// import {addTodoListAC} from "../store/todolists-reducer";
+// } from '../app/tasks-reducer'
+// import {addTodoListAC} from "../app/todolists-reducer";
 //
 // let startState: TasksStateType
 //
