@@ -11,6 +11,7 @@ import {
 } from "../features/Todolists/todolists-reducer";
 import {shallowEqual, useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 
 function AppWithRedux() {
 
@@ -40,6 +41,7 @@ function AppWithRedux() {
 
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container style={{padding: '20px'}}>
