@@ -56,6 +56,7 @@ function AppWithRedux() {
                                     todoListId={el.id}
                                     title={el.title}
                                     filter={el.filter}
+                                    entityStatus={el.entityStatus}
                                     changeFilter={changeFilter}
                                     removeTodoList={removeTodoList}
                                     changeTodoListTitle={changeTodoListTitle}

@@ -11,11 +11,13 @@ import React, {useCallback, useEffect} from "react";
 import {Task} from "./Task/Task";
 import {FilterValuesType} from "../todolists-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolist-api";
+import {RequestStatusType} from "../../../app/app-reducer";
 
 type PropsType = {
     todoListId: string
     title: string
     filter: string
+    entityStatus: RequestStatusType
     changeFilter: (todoListId: string, value: FilterValuesType) => void
     removeTodoList: (todoListId: string) => void
     changeTodoListTitle: (todoListId: string, newTodoListTitle: string) => void
@@ -62,7 +64,7 @@ export const Todolist = React.memo((props: PropsType) => {
             <h3>
                 <EditableSpan title={props.title}
                               changeTaskTitle={changeTodoListTitleHandler}/>
-                <IconButton onClick={removeTodoListHandler}>
+                <IconButton onClick={removeTodoListHandler} disabled={props.entityStatus === 'loading'}>
                     <DeleteIcon/>
                 </IconButton>
             </h3>
