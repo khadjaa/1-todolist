@@ -98,19 +98,24 @@ export const setTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
 }
 export const createTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    todolistAPI.createTask(todolistId, title).then((res) => {
-        if(res.data.resultCode === 0) {
-            dispatch(addTaskAC(res.data.data.item))
-            dispatch(setAppStatusAC('succeeded'))
-        } else {
-            if (res.data.messages.length) {
-                dispatch(setAppErrorAC(res.data.messages[0]))
+    todolistAPI.createTask(todolistId, title)
+        .then((res) => {
+            if (res.data.resultCode === 0) {
+                dispatch(addTaskAC(res.data.data.item))
+                dispatch(setAppStatusAC('succeeded'))
             } else {
-                dispatch(setAppErrorAC('Some error occurred'))
+                if (res.data.messages.length) {
+                    dispatch(setAppErrorAC(res.data.messages[0]))
+                } else {
+                    dispatch(setAppErrorAC('Some error occurred'))
+                }
+                dispatch(setAppStatusAC('failed'))
             }
+        })
+        .catch((error) => {
             dispatch(setAppStatusAC('failed'))
-        }
-    })
+            dispatch(setAppErrorAC(error.message))
+        })
 }
 export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispatch) => {
     todolistAPI.deleteTask(id, todolistId).then((res) => {
@@ -134,9 +139,20 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
                 description: task.description,
                 deadline: task.deadline,
                 status: status
-            }).then(() => {
-                const action = changeTaskStatusAC(taskId, todolistId, status)
-                dispatch(action)
+            }).then((res) => {
+                if (res.data.resultCode === 0) {
+                    dispatch(changeTaskStatusAC(taskId, todolistId, status))
+                } else {
+                    if (res.data.messages.length) {
+                        dispatch(setAppErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setAppErrorAC('Some error occurred'))
+                    }
+                    dispatch(setAppStatusAC('failed'))
+                }
+            }).catch((error) => {
+                dispatch(setAppStatusAC('failed'))
+                dispatch(setAppErrorAC(error.message))
             })
         }
     }
