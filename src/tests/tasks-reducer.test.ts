@@ -117,12 +117,6 @@ test('task title should be changed', () => {
     expect(endState['todolistId2'][1].title).toBe('Sneakers')
 })
 
-export type TodolistType = {
-    id: string,
-    title: string,
-    addedDate: string,
-    order: number
-}
 test('new array should be added when new todolist is added', () => {
     const todoList = {
         id: 'todolist3',
