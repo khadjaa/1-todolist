@@ -1,21 +1,13 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import './App.css';
 import ButtonAppBar from "../components/ButtonAppBar/ButtonAppBar";
 import {Container} from "@mui/material";
-import {getTodolistsTC} from "../features/Todolists/todolists-reducer";
-import {useAppDispatch} from "./store";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {TodolistsList} from "../features/Todolists/TodolistsList";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
 
 function AppWithRedux() {
-
-    const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        dispatch(getTodolistsTC())
-    }, [])
 
     return (
         <div className="App">
