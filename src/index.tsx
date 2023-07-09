@@ -4,14 +4,17 @@ import './index.css';
 import AppWithRedux from "./app/AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./app/store";
+import {BrowserRouter} from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-      <Provider store={store}>
-          <AppWithRedux />
-      </Provider>
+    <BrowserRouter>
+        <Provider store={store}>
+            <AppWithRedux />
+        </Provider>
+    </BrowserRouter>
 );
 
 // If you want to start measuring performance in your features, pass a function
