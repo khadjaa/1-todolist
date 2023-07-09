@@ -6,7 +6,7 @@ import {getTodolistsTC} from "../features/Todolists/todolists-reducer";
 import {useAppDispatch} from "./store";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {TodolistsList} from "../features/Todolists/TodolistsList";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
 
 function AppWithRedux() {
@@ -23,8 +23,10 @@ function AppWithRedux() {
             <ButtonAppBar/>
             <Container fixed>
                 <Routes>
-                    <Route path={'/'} element={<TodolistsList/>}></Route>
-                    <Route path={'/login'} element={<Login/>}></Route>
+                    <Route path={'/'} element={<TodolistsList/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path='/404' element={<h1>404: PAGE NOT FOUND</h1>}/>
+                    <Route path='*' element={<Navigate to={'/404'}/>}/>
                 </Routes>
             </Container>
         </div>
