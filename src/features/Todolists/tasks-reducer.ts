@@ -2,20 +2,23 @@ import {addTodoListAC, removeTodoListAC} from "./todolists-reducer";
 import {Dispatch} from "redux";
 import {TaskStatuses, TaskType, todolistAPI} from "../../api/todolist-api";
 import {AppRootStateType} from "../../app/store";
-import {setAppStatusAC, SetErrorStatusType, SetLoadingStatusType} from "../../app/app-reducer";
+import {RequestStatusType, setAppStatusAC, SetErrorStatusType, SetLoadingStatusType} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
-const initialState: TasksStateType = {}
-export type TasksStateType = {
-    [key: string]: Array<TaskType>
+export type TasksDomainType = TaskType & {
+    entityStatus: RequestStatusType
 }
+export type TasksStateType = {
+    [key: string]: TasksDomainType[]
+}
+const initialState: TasksStateType = {}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {
         case "SET-TASKS": {
             return {
                 ...state,
-                [action.todolistId]: action.tasks
+                [action.todolistId]: action.tasks.map(el => ({...el, entityStatus: 'idle'}))
             }
         }
         case "REMOVE-TASK" : {
@@ -28,7 +31,10 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case "ADD-TASK": {
             return {
                 ...state,
-                [action.payload.task.todoListId]: [action.payload.task, ...state[action.payload.task.todoListId]]
+                [action.payload.task.todoListId]: [{
+                    ...action.payload.task,
+                    entityStatus: 'idle'
+                }, ...state[action.payload.task.todoListId]]
             }
         }
         case "CHANGE-TASK-STATUS": {
@@ -60,6 +66,15 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             delete copyState[action.payload.id]
             return copyState
         }
+        case "CHANGE-TASK-ENTITY-STATUS": {
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId]
+                    .map(el => el.id === action.id
+                    ? {...el, entityStatus: action.entityStatus}
+                    : el)
+            }
+        }
         default:
             return state
     }
@@ -72,6 +87,7 @@ type ActionsType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>
     | ReturnType<typeof setTasksAC>
+    | ReturnType<typeof changeTaskEntityStatusAC>
     | SetLoadingStatusType
     | SetErrorStatusType
 
@@ -90,6 +106,9 @@ export const changeTaskTitleAC = (id: string, newTitle: string, todolistId: stri
 const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
     return {type: 'SET-TASKS', todolistId, tasks} as const
 }
+const changeTaskEntityStatusAC = (todolistId: string, id: string, entityStatus: RequestStatusType) => (
+    {type: 'CHANGE-TASK-ENTITY-STATUS', todolistId, id, entityStatus} as const
+)
 
 export const setTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     todolistAPI.getTasks(todolistId)
@@ -113,6 +132,7 @@ export const createTaskTC = (todolistId: string, title: string) => (dispatch: Di
         })
 }
 export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispatch) => {
+    dispatch(changeTaskEntityStatusAC(todolistId, id, 'loading'))
     todolistAPI.deleteTask(id, todolistId)
         .then((res) => {
             if (res.data.resultCode === 0) {
@@ -122,6 +142,7 @@ export const deleteTaskTC = (id: string, todolistId: string) => (dispatch: Dispa
             }
         })
         .catch((error) => {
+            dispatch(changeTaskEntityStatusAC(todolistId, id, 'idle'))
             handleServerNetworkError(error, dispatch)
         })
 }

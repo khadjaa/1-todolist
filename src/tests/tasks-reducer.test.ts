@@ -23,7 +23,8 @@ beforeEach(() => {
                 order: 1,
                 description: '',
                 priority: TaskPriorities.Hi,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: 'idle'
             },
             {
                 id: '2',
@@ -35,7 +36,8 @@ beforeEach(() => {
                 order: 2,
                 description: '',
                 priority: TaskPriorities.Hi,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: 'idle'
             },
         ],
         'todolistId2': [
@@ -49,7 +51,8 @@ beforeEach(() => {
                 order: 1,
                 description: '',
                 priority: TaskPriorities.Hi,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: 'idle'
             },
             {
                 id: '2',
@@ -61,7 +64,8 @@ beforeEach(() => {
                 order: 2,
                 description: '',
                 priority: TaskPriorities.Hi,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: 'idle'
             },
         ]
     }

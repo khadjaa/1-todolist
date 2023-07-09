@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from "@mui/material/Button";
 import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "../../../app/store";
-import {createTaskTC, setTasksTC} from "../tasks-reducer";
+import {createTaskTC, setTasksTC, TasksDomainType} from "../tasks-reducer";
 import React, {useCallback, useEffect} from "react";
 import {Task} from "./Task/Task";
 import {FilterValuesType} from "../todolists-reducer";
@@ -25,7 +25,7 @@ type PropsType = {
 
 export const Todolist = React.memo((props: PropsType) => {
 
-    const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[props.todoListId])
+    const tasks = useSelector<AppRootStateType, TasksDomainType[]>(state => state.tasks[props.todoListId])
     const dispatch = useAppDispatch()
 
     useEffect(() => {
