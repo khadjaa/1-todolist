@@ -4,12 +4,14 @@ import TextField from '@mui/material/TextField';
 export type EditableSpanPropsType = {
     title: string
     changeTaskTitle: (title: string) => void
+    isDisabled?: boolean
 }
 
 export const EditableSpan: FC<EditableSpanPropsType> = React.memo((
     {
         title,
-        changeTaskTitle
+        changeTaskTitle,
+        isDisabled
     }) => {
 
     const [editMode, setEditMode] = useState(false)
@@ -39,6 +41,7 @@ export const EditableSpan: FC<EditableSpanPropsType> = React.memo((
                        // error={!!error}
                        label={'Title'}
                        // helperText={error}
+                       disabled={isDisabled}
             />
             : <span onDoubleClick={activateEditModeHandler}>{title}</span>
     );

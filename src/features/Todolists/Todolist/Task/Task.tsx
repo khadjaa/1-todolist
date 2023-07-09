@@ -36,7 +36,9 @@ export const Task = React.memo((props: TaskPropsType) => {
                 color='primary'
                 onChange={(e) => changeCheckBoxHandler(props.task.id, e.currentTarget.checked)}
             />
-            <EditableSpan title={props.task.title} changeTaskTitle={changeTaskTitleHandler}/>
+            <EditableSpan title={props.task.title}
+                          changeTaskTitle={changeTaskTitleHandler}
+                          isDisabled={props.task.entityStatus === 'loading'}/>
             <IconButton onClick={() => onClickRemoveTaskHandler(props.task.id)}
                         disabled={props.task.entityStatus === 'loading'}>
                 <DeleteIcon/>
