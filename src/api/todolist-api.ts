@@ -18,7 +18,9 @@ export const todolistAPI = {
         }>>, { title: string }>(`todo-lists`, {title})
     },
     updateTodolist(todolistId: string, title: string) {
-        return instance.put<ResponseType, AxiosResponse<ResponseType>, { title: string }>(`todo-lists/${todolistId}`, {title: title})
+        return instance.put<ResponseType, AxiosResponse<ResponseType>, {
+            title: string
+        }>(`todo-lists/${todolistId}`, {title: title})
     },
     deleteTodoList(todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
@@ -37,6 +39,24 @@ export const todolistAPI = {
     }
 }
 
+export const authAPI = {
+    login(data: loginDataType) {
+        return instance.post(`/auth/login`, data)
+    }
+}
+
+export type loginDataType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
+type postLoginDataResponseType = {
+    resultCode: number
+    messages: Array<string>,
+    data: {
+        userId: number
+    }
+}
 export type TodolistType = {
     id: string,
     title: string,
