@@ -1,4 +1,4 @@
-import {addTodoListAC, removeTodoListAC} from "./todolists-reducer";
+import {addTodoListAC, clearTodoListsDataType, removeTodoListAC} from "./todolists-reducer";
 import {Dispatch} from "redux";
 import {TaskStatuses, TaskType, todolistAPI} from "../../api/todolist-api";
 import {AppRootStateType} from "../../app/store";
@@ -11,6 +11,7 @@ export type TasksDomainType = TaskType & {
 export type TasksStateType = {
     [key: string]: TasksDomainType[]
 }
+
 const initialState: TasksStateType = {}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
@@ -71,25 +72,16 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
                 ...state,
                 [action.todolistId]: state[action.todolistId]
                     .map(el => el.id === action.id
-                    ? {...el, entityStatus: action.entityStatus}
-                    : el)
+                        ? {...el, entityStatus: action.entityStatus}
+                        : el)
             }
         }
+        case "CLEAR-DATA":
+            return {}
         default:
             return state
     }
 }
-
-type ActionsType = ReturnType<typeof removeTaskAC>
-    | ReturnType<typeof addTaskAC>
-    | ReturnType<typeof changeTaskStatusAC>
-    | ReturnType<typeof changeTaskTitleAC>
-    | ReturnType<typeof addTodoListAC>
-    | ReturnType<typeof removeTodoListAC>
-    | ReturnType<typeof setTasksAC>
-    | ReturnType<typeof changeTaskEntityStatusAC>
-    | SetLoadingStatusType
-    | SetErrorStatusType
 
 export const removeTaskAC = (id: string, todolistId: string) => {
     return {type: 'REMOVE-TASK', payload: {id, todolistId,}} as const
@@ -175,3 +167,15 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
         }
     }
 }
+
+type ActionsType = ReturnType<typeof removeTaskAC>
+    | ReturnType<typeof addTaskAC>
+    | ReturnType<typeof changeTaskStatusAC>
+    | ReturnType<typeof changeTaskTitleAC>
+    | ReturnType<typeof addTodoListAC>
+    | ReturnType<typeof removeTodoListAC>
+    | ReturnType<typeof setTasksAC>
+    | ReturnType<typeof changeTaskEntityStatusAC>
+    | SetLoadingStatusType
+    | SetErrorStatusType
+    | clearTodoListsDataType

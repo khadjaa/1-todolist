@@ -21,13 +21,13 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
     }
 }
 
-type ActionsType = SetLoadingStatusType
-    | SetErrorStatusType
-    | setIsInitializedStatusType
-
 export type SetLoadingStatusType = ReturnType<typeof setAppStatusAC>
 export type SetErrorStatusType = ReturnType<typeof setAppErrorAC>
 export type setIsInitializedStatusType = ReturnType<typeof setIsInitializedAC>
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
 export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
 export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP/SET-INITIALIZE', isInitialized} as const)
+
+type ActionsType = SetLoadingStatusType
+    | SetErrorStatusType
+    | setIsInitializedStatusType

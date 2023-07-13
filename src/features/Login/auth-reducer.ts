@@ -4,10 +4,12 @@ import {
 } from '../../app/app-reducer'
 import {authAPI, loginDataType} from "../../api/todolist-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {clearTodoListsDataAC, clearTodoListsDataType} from "../Todolists/todolists-reducer";
 
 const initialState = {
     isLoggedIn: false
 }
+
 type InitialStateType = typeof initialState
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -18,11 +20,10 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
             return state
     }
 }
-// actions
+
 export const setIsLoggedInAC = (value: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', value} as const)
 
-// thunks
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     authAPI.me()
         .then(res => {
@@ -61,6 +62,7 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC(false))
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(clearTodoListsDataAC())
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -71,5 +73,8 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
 }
 
 // types
-type ActionsType = ReturnType<typeof setIsLoggedInAC> | SetLoadingStatusType | SetErrorStatusType
+type ActionsType = ReturnType<typeof setIsLoggedInAC>
+    | SetLoadingStatusType
+    | SetErrorStatusType
+    | clearTodoListsDataType
 
