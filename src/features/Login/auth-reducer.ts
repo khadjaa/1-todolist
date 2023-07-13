@@ -72,7 +72,6 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
         })
 }
 
-// types
 type ActionsType = ReturnType<typeof setIsLoggedInAC>
     | SetLoadingStatusType
     | SetErrorStatusType

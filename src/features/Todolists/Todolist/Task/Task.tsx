@@ -19,12 +19,10 @@ export const Task = React.memo((props: TaskPropsType) => {
     const changeTaskTitleHandler = useCallback((title: string) => {
         dispatch(changeTaskTitleAC(props.task.id, title, props.todoListId))
     }, [])
-
     const changeCheckBoxHandler = (tID: string, eventValue: boolean) => {
         console.log(eventValue)
         dispatch(updateTaskStatusTC(tID, props.todoListId, eventValue ? TaskStatuses.Completed : TaskStatuses.New))
     }
-
     const onClickRemoveTaskHandler = (id: string) => {
         dispatch(deleteTaskTC(id, props.todoListId))
     }

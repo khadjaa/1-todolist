@@ -2,6 +2,7 @@ import {Dispatch} from "redux";
 import {todolistAPI, TodolistType,} from "../../api/todolist-api";
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {getTasksTC} from "./tasks-reducer";
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistDomainType = TodolistType & {
@@ -67,13 +68,18 @@ export type clearTodoListsDataType = ReturnType<typeof clearTodoListsDataAC>
 export const clearTodoListsDataAC = () => ({type: 'CLEAR-DATA'} as const)
 const changeTodolistEntityStatusAC = (id: string, entityStatus: RequestStatusType) => (
     {type: 'CHANGE-TODOLIST-ENTITY-STATUS', id, entityStatus} as const)
-export const getTodolistsTC = () => (dispatch: Dispatch) => {
+export const getTodolistsTC = () => (dispatch: Dispatch<any>) => {
     dispatch(setAppStatusAC('loading'))
     todolistAPI.getTodolist()
         .then((res) => {
-            console.log(res)
             dispatch(setTodolistsAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
+            return res.data
+        })
+        .then((todolists) => {
+            todolists.forEach((el) => {
+                dispatch(getTasksTC(el.id))
+            })
         })
 }
 export const updateTodolistTC = (todoListId: string, newTodoListTitle: string) => (dispatch: Dispatch) => {

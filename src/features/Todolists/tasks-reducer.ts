@@ -95,14 +95,15 @@ export const changeTaskStatusAC = (id: string, todolistId: string, status: TaskS
 export const changeTaskTitleAC = (id: string, newTitle: string, todolistId: string) => {
     return {type: 'CHANGE-TASK-TITLE', payload: {id, newTitle, todolistId,}} as const
 }
-const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
+export type SetTasksType = ReturnType<typeof setTasksAC>
+export const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
     return {type: 'SET-TASKS', todolistId, tasks} as const
 }
 const changeTaskEntityStatusAC = (todolistId: string, id: string, entityStatus: RequestStatusType) => (
     {type: 'CHANGE-TASK-ENTITY-STATUS', todolistId, id, entityStatus} as const
 )
 
-export const setTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     todolistAPI.getTasks(todolistId)
         .then((res) => {
             dispatch(setTasksAC(todolistId, res.data.items))
@@ -174,7 +175,7 @@ type ActionsType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof changeTaskTitleAC>
     | ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>
-    | ReturnType<typeof setTasksAC>
+    | SetTasksType
     | ReturnType<typeof changeTaskEntityStatusAC>
     | SetLoadingStatusType
     | SetErrorStatusType

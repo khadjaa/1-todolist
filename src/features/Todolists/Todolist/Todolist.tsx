@@ -6,11 +6,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from "@mui/material/Button";
 import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "../../../app/store";
-import {createTaskTC, setTasksTC, TasksDomainType} from "../tasks-reducer";
-import React, {useCallback, useEffect} from "react";
+import {createTaskTC, TasksDomainType} from "../tasks-reducer";
+import React, {useCallback} from "react";
 import {Task} from "./Task/Task";
 import {FilterValuesType} from "../todolists-reducer";
-import {TaskStatuses, TaskType} from "../../../api/todolist-api";
+import {TaskStatuses} from "../../../api/todolist-api";
 import {RequestStatusType} from "../../../app/app-reducer";
 
 type PropsType = {
@@ -28,22 +28,15 @@ export const Todolist = React.memo((props: PropsType) => {
     const tasks = useSelector<AppRootStateType, TasksDomainType[]>(state => state.tasks[props.todoListId])
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        dispatch(setTasksTC(props.todoListId))
-    }, [])
-
     const tsarOnClickChangeFilterHandler = useCallback((filterType: FilterValuesType) => {
         props.changeFilter(props.todoListId, filterType)
     }, [])
-
     const removeTodoListHandler = () => {
         props.removeTodoList(props.todoListId)
     }
-
     const addTask = (title: string) => {
         dispatch(createTaskTC(props.todoListId, title))
     }
-
     const changeTodoListTitleHandler = useCallback((title: string) => {
         props.changeTodoListTitle(props.todoListId, title)
     }, [])
