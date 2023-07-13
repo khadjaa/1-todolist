@@ -41,10 +41,13 @@ export const todolistAPI = {
 
 export const authAPI = {
     login(data: loginDataType) {
-        return instance.post(`/auth/login`, data)
+        return instance.post(`auth/login`, data)
     },
     me() {
         return instance.get(`auth/me`)
+    },
+    logout() {
+        return instance.delete(`auth/login`)
     }
 }
 
