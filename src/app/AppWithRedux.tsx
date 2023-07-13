@@ -1,13 +1,30 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import ButtonAppBar from "../components/ButtonAppBar/ButtonAppBar";
-import {Container} from "@mui/material";
+import {CircularProgress, Container} from "@mui/material";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {TodolistsList} from "../features/Todolists/TodolistsList";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
+import {AppRootStateType, useAppDispatch} from "./store";
+import {initializeAppTC} from "../features/Login/auth-reducer";
+import {useSelector} from "react-redux";
 
 function AppWithRedux() {
+
+    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(initializeAppTC())
+    },[])
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
 
     return (
         <div className="App">

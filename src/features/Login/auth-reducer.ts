@@ -1,6 +1,6 @@
 import {Dispatch} from 'redux'
 import {
-    setAppStatusAC, SetErrorStatusType, SetLoadingStatusType
+    setAppStatusAC, SetErrorStatusType, setIsInitializedAC, SetLoadingStatusType
 } from '../../app/app-reducer'
 import {authAPI, loginDataType} from "../../api/todolist-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
@@ -23,6 +23,22 @@ export const setIsLoggedInAC = (value: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', value} as const)
 
 // thunks
+export const initializeAppTC = () => (dispatch: Dispatch) => {
+    authAPI.me()
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(setIsLoggedInAC(true));
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+        })
+        .catch((error) => {
+            handleServerNetworkError(error.message, dispatch)
+        })
+        .finally(() => {
+            dispatch(setIsInitializedAC(true))
+        })
+}
 export const loginTC = (data: loginDataType) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.login(data)
@@ -41,3 +57,4 @@ export const loginTC = (data: loginDataType) => (dispatch: Dispatch<ActionsType>
 
 // types
 type ActionsType = ReturnType<typeof setIsLoggedInAC> | SetLoadingStatusType | SetErrorStatusType
+
